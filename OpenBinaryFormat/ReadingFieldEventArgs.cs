@@ -7,6 +7,7 @@ namespace Obf
 		public string Name;
 		public int Type;
 		public long BlockEnd;
+		public bool Handled;
 	}
 }
 

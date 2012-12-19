@@ -22,6 +22,9 @@ namespace Obf
 		private System.IO.BinaryWriter w;
 		private System.IO.BinaryReader r;
 		
+		public delegate void ReadingFieldEventHandler(object sender, ReadingFieldEventArgs evt);
+		public event ReadingFieldEventHandler ReadingField;
+		
 		public const int FORMAT_TYPE_BLOCK = -1;
 		public const int FORMAT_TYPE_LONG = -100;
 		public const int FORMAT_TYPE_INT = -101;
@@ -51,19 +54,18 @@ namespace Obf
 			r.BaseStream.Position = evt.BlockEnd;
 			return default(T);
 		}
-		
-		public delegate void ReadingField(object sender, ReadingFieldEventArgs evt);
-		
+
 		/// <summary>
-		/// Reads document with a closure function and a position to end of block.
+		/// Reads document and calls event ReadingField.
+		/// You can call this recursively in the event using
+		/// 
+		/// 	f.ReadDocument(evt.BlockEnd);
+		/// 
 		/// </summary>
-		/// <param name='func'>
-		/// A closure function determining action by name and type.
-		/// </param>
 		/// <param name='blockEnd'>
-		/// The position after end of block.
+		/// Block end.
 		/// </param>
-		public void ReadDocument(ReadingField func, long blockEnd = -1)
+		public void ReadDocument(long blockEnd = -1)
 		{
 			if (blockEnd < 0) blockEnd = r.BaseStream.Length;
 
@@ -76,9 +78,19 @@ namespace Obf
 					// Call itself recursively to skip block.
 					long blockSize = r.ReadInt64();
 					long posEnd = r.BaseStream.Position + blockSize;
-					ReadDocument(func, posEnd);
+					ReadDocument(posEnd);            
 				} else {
-					func(this, evt);
+					// Read field and break if anything wrong happened.
+					evt.Handled = false;
+					if (this.ReadingField != null) this.ReadingField(this, evt);
+					if (!evt.Handled) {
+						// Jump to end of block.
+						if (r.BaseStream.Position < blockEnd) r.BaseStream.Position = blockEnd;
+						if (r.BaseStream.Position > blockEnd) 
+							throw new Exception("Read beyond end of block '" + 
+							                    evt.Name + "' at position " + evt.BlockEnd);
+						break;
+					}
 				}
 				
 			}
@@ -187,9 +199,9 @@ namespace Obf
 		/// <param name='w'>
 		/// A binary writer that writes to a file or a stream.
 		/// </param>
-		public long WriteBeginBlock()
+		public long StartBlock(string name)
 		{
-			w.Write("Block");
+			w.Write(name);
 			w.Write(FORMAT_TYPE_BLOCK);
 			long pos = w.BaseStream.Position;
 			w.Write((long)-1);
@@ -206,7 +218,7 @@ namespace Obf
 		/// <param name='pos'>
 		/// The position of the start of the block.
 		/// </param>
-		public void WriteEndBlock(long pos)
+		public void EndBlock(long pos)
 		{
 			// Write the size of the block.
 			long endPos = w.BaseStream.Position;
