@@ -4,19 +4,51 @@ csharp-openbinaryformat
 A binary format that is version-neutral, flexible and fault-tolerant.  
 BSD license (for more information about license and update log, see "version.md").  
 
-##Introduction to OpenBinaryFormat  
+##Philosophy Behind OpenBinaryFormat
 
-OpenBinaryFormat is a binary data format designed for flexibility and backward compability.  
-By default, it supports common data types and automatic conversion of: 
+OpenBinaryFormat is based on abstracting a data "block" from the actual data.  
+By controlling blocks, the exporter program can control when and how the importer fails if incompatible.  
+A block tells the importer to "ignore the rest if you don't understand it".  
+Some importer algorithms may try to read multiple versions of the same data until they "get it".  
+This makes it easy to expand a format with custom types and create files that are compatible with multiple importers.  
 
-- Double
-- Float
-- Long
-- Int
-- String
-- Byte array
+##Field Binary Layout
 
-Example of file layout, in corresponding XML:
+    <name>      type: string
+    <type>      type: int32, little endian order
+    <data>      type: unknown
+    
+##Block Binary Layout
+
+A block tells how many bytes to skip if there is an error or unknown fields.  
+It is specifically designed to handle incompability and partial loading, it _does not affect the data model_.  
+Blocks can be nested, which gives the exporter algorithms full control over compability behavior.  
+
+    <name>      type: string
+    -1          type: int32, little endian order
+    <length>    type: long
+    ...         (data)
+    _______     (end of block)
+    
+##Native Types
+
+All native types have negative type index, to make the format easily expandable for custom types.  
+The native types are:  
+
+    -1      Block
+    -100    Long        Int64               Little endian order
+    -101    Int         Int32               Little endian order
+    -200    Double      Float64             Little endian order
+    -201    Float       Float32             Little endian order
+    -300    String      Length + char[]     UTF-8
+    -400    Bytes
+
+To make your application maximum compatible with other OpenBinaryFormat applications,  
+please support the data types above.  
+
+##Example
+
+If the binary format was written in XML format, it may look something like this:  
 
     <block name="v1.0">
       <string name="First Name">John</string>
@@ -26,18 +58,6 @@ Example of file layout, in corresponding XML:
         <int name="CustomerId">42</int>
       </block>
     </block>
-    
-The program jumps to end of block when not recognizing one or more fields.  
-This makes it possible to extend the format with new types of fields while  
-maintaining maximum backward compability.  
 
-The block hierarchy does not affect the data model, which gives many advantages.  
-One can use blocks for many tricks, for example reading more than one data model from same file.  
-Since the blocks are skipped when encountering an unexpected field, one can simply join  
-files together and read it twice, one for each "type" of file.  
-This makes it easy to combine multiple document formats in the same file.  
-
-In traditional formats, the responsibility of compability is put on the program reading the file.  
-OpenBinaryFormat pushes this responsibility to the program writing the file.  
-This solves the problem of predicting future needs for a format.  
-
+Here we see 3 fields controlled by 2 blocks.  
+The 2 first fields are written by the application while the 3rd is written by a plugin.  
