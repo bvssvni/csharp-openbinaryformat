@@ -113,7 +113,7 @@ namespace Obf
 		public static OpenBinaryFormat FromMemory(System.IO.MemoryStream mem)
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
-			format.r = new System.IO.BinaryReader(mem);
+			format.r = new System.IO.BinaryReader(mem, System.Text.Encoding.UTF8);
 
 			return format;
 		}
@@ -122,7 +122,7 @@ namespace Obf
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
 			System.IO.FileStream f = new System.IO.FileStream(file, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
-			format.w = new System.IO.BinaryWriter(f);
+			format.w = new System.IO.BinaryWriter(f, System.Text.Encoding.UTF8);
 			
 			return format;
 		}
@@ -130,7 +130,7 @@ namespace Obf
 		public static OpenBinaryFormat ToMemory(System.IO.MemoryStream mem)
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
-			format.w = new System.IO.BinaryWriter(mem);
+			format.w = new System.IO.BinaryWriter(mem, System.Text.Encoding.UTF8);
 
 			return format;
 		}
