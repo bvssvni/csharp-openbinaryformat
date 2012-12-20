@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Obf
 {
@@ -21,9 +22,8 @@ namespace Obf
 	{
 		private System.IO.BinaryWriter w;
 		private System.IO.BinaryReader r;
-		
-		public delegate void ReadingFieldEventHandler(object sender, ReadingFieldEventArgs evt);
-		public event ReadingFieldEventHandler ReadingField;
+
+		public delegate void ReadingFieldDelegate(object sender, IEnumerator<bool> iterator);
 		
 		public const int FORMAT_TYPE_BLOCK = -1;
 		public const int FORMAT_TYPE_LONG = -100;
@@ -33,75 +33,123 @@ namespace Obf
 		public const int FORMAT_TYPE_STRING = -300;
 		public const int FORMAT_TYPE_BYTES = -400;
 		
-		public T Read<T>(ReadingFieldEventArgs evt)
+		public T Read<T>(Field evt)
 		{
 			switch (evt.Type) {
 			case FORMAT_TYPE_STRING:
+				evt.Handled = true;
 				return (T)Convert.ChangeType(r.ReadString(), typeof(T));
 			case FORMAT_TYPE_DOUBLE:
+				evt.Handled = true;
 				return (T)Convert.ChangeType(r.ReadDouble(), typeof(T));
 			case FORMAT_TYPE_FLOAT:
+				evt.Handled = true;
 				return (T)Convert.ChangeType(r.ReadSingle(), typeof(T));
 			case FORMAT_TYPE_INT:
+				evt.Handled = true;
 				return (T)Convert.ChangeType(r.ReadInt32(), typeof(T));
 			case FORMAT_TYPE_LONG:
+				evt.Handled = true;
 				return (T)Convert.ChangeType(r.ReadInt64(), typeof(T));
 			case FORMAT_TYPE_BYTES:
+				evt.Handled = true;
 				return (T)Convert.ChangeType(r.ReadBytes((int)r.ReadInt64()), typeof(T));
 			}
 			
 			// Jump to the end of block.
-			r.BaseStream.Position = evt.BlockEnd;
+			evt.Handled = false;
 			return default(T);
 		}
 
-		/// <summary>
-		/// Reads document and calls event ReadingField.
-		/// You can call this recursively in the event using
-		/// 
-		/// 	f.ReadDocument(evt.BlockEnd);
-		/// 
-		/// </summary>
-		/// <param name='blockEnd'>
-		/// Block end.
-		/// </param>
-		public void ReadDocument(long blockEnd = -1)
-		{
-			if (blockEnd < 0) blockEnd = r.BaseStream.Length;
+		private Field m_currentField;
 
-			var evt = new ReadingFieldEventArgs();
-			evt.BlockEnd = blockEnd;
-			while (r.BaseStream.Position < blockEnd) {
-				evt.Name = r.ReadString();
-				evt.Type = r.ReadInt32();
-				if (evt.Type == FORMAT_TYPE_BLOCK) {
-					// Call itself recursively to skip block.
-					long blockSize = r.ReadInt64();
-					long posEnd = r.BaseStream.Position + blockSize;
-					ReadDocument(posEnd);            
-				} else {
-					// Read field and break if anything wrong happened.
-					evt.Handled = false;
-					if (this.ReadingField != null) this.ReadingField(this, evt);
-					if (!evt.Handled) {
-						// Jump to end of block.
-						if (r.BaseStream.Position < blockEnd) r.BaseStream.Position = blockEnd;
-						if (r.BaseStream.Position > blockEnd) 
-							throw new Exception("Read beyond end of block '" + 
-							                    evt.Name + "' at position " + evt.BlockEnd);
-						break;
-					}
-				}
-				
+		public Field CurrentField
+		{
+			get {
+				return m_currentField;
 			}
 		}
-		
+
+		/// <summary>
+		/// Returns an iterator that keeps track of the fields in the file or stream.
+		/// This creates a "root block" iterator for nested blocks.
+		/// </summary>
+		private IEnumerator<bool> Fields()
+		{
+			long end = r.BaseStream.Length;
+			m_currentField = new Field();
+			while (r.BaseStream.Position < end) {
+				m_currentField.Name = r.ReadString();
+				m_currentField.Type = r.ReadInt32();
+				m_currentField.Handled = false;
+				m_currentField.ReadIt = false;
+
+				yield return true;
+			}
+		}
+
+		/// <summary>
+		/// Constructs a field iterator for a block within the context of a parent field iterator.
+		/// </summary>
+		/// <returns>
+		/// Returns an iterator for a block.
+		/// </returns>
+		/// <param name='fields'>
+		/// The parent block to restrict the domain of the iterator.
+		/// </param>
+		/// <param name='blockEnd'>
+		/// The end position of the block.
+		/// </param>
+		private IEnumerator<bool> BlockFields(IEnumerator<bool> fields, long blockEnd)
+		{
+			while (r.BaseStream.Position < blockEnd && fields.MoveNext()) {
+				yield return true;
+			}
+		}
+
+		public void ReadField(ReadingFieldDelegate func, IEnumerator<bool> fields = null)
+		{
+			if (fields == null) fields = Fields();
+			if (m_currentField == null || m_currentField.Handled) fields.MoveNext();
+
+			do {
+				if (m_currentField.Type == FORMAT_TYPE_BLOCK) {
+					// Start on a new block.
+					var length = r.ReadInt64();
+					var pos = r.BaseStream.Position;
+					var blockFields = BlockFields(fields, pos + length);
+					m_currentField.Handled = true;
+
+					ReadField(func, blockFields);
+					if (m_currentField.ReadIt) {
+						Console.WriteLine("ReadIt");
+						return;
+					}
+
+					if (!m_currentField.Handled) {
+						// Jump to end of block.
+						r.BaseStream.Position = pos + length;
+						m_currentField.Handled = true;
+
+						// Console.WriteLine("Jumping");
+					}
+				} else {
+					// Deal with the field.
+					func(this, fields);
+
+					if (!m_currentField.Handled) {
+						return;
+					}
+				}
+			} while (fields.MoveNext());
+		}
+
 		public static OpenBinaryFormat FromFile(string file)
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
 			System.IO.FileStream f = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read);
 			format.r = new System.IO.BinaryReader(f);
-			
+
 			return format;
 		}
 

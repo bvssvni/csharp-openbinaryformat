@@ -1,16 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ReadingFieldEventArgs.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Test.cs">
     <Files>
-      <File FileName="OpenBinaryFormat.cs" Line="53" Column="73" />
-      <File FileName="Test.cs" Line="21" Column="82" />
-      <File FileName="ReadingFieldEventArgs.cs" Line="3" Column="14" />
+      <File FileName="OpenBinaryFormat.cs" Line="120" Column="1" />
+      <File FileName="Test.cs" Line="115" Column="14" />
+      <File FileName="Field.cs" Line="6" Column="41" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="OpenBinaryFormat" expanded="True" selected="True">
-            <Node name="References" expanded="True" />
+          <Node name="OpenBinaryFormat" expanded="True">
+            <Node name="Test.cs" selected="True" />
           </Node>
         </State>
       </Pad>
