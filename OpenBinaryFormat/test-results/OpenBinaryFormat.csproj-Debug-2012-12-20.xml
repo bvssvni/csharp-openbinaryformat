@@ -573,6 +573,142 @@ Execution time: 0.05ms</Message>
 
 Execution time: 0.06ms</Message>
     </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T02:54:33</TestDate>
+      <Passed>1</Passed>
+      <Errors>0</Errors>
+      <Failures>0</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>Test successful
+
+Execution time: 0.05ms</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T02:55:54</TestDate>
+      <Passed>1</Passed>
+      <Errors>0</Errors>
+      <Failures>0</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>Test successful
+
+Execution time: 0.04ms</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T02:59:08</TestDate>
+      <Passed>1</Passed>
+      <Errors>0</Errors>
+      <Failures>0</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>Test successful
+
+Execution time: 0.04ms</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T03:00:15</TestDate>
+      <Passed>1</Passed>
+      <Errors>0</Errors>
+      <Failures>0</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>Test successful
+
+Execution time: 0.07ms</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T03:00:43</TestDate>
+      <Passed>1</Passed>
+      <Errors>0</Errors>
+      <Failures>0</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>Test successful
+
+Execution time: 0.05ms</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T03:00:55</TestDate>
+      <Passed>1</Passed>
+      <Errors>0</Errors>
+      <Failures>0</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>Test successful
+
+Execution time: 0.06ms</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T03:02:26</TestDate>
+      <Passed>0</Passed>
+      <Errors>0</Errors>
+      <Failures>1</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>One or more child tests had errors</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T03:02:40</TestDate>
+      <Passed>1</Passed>
+      <Errors>0</Errors>
+      <Failures>0</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>Test successful
+
+Execution time: 0.06ms</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T10:13:33</TestDate>
+      <Passed>0</Passed>
+      <Errors>0</Errors>
+      <Failures>1</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>One or more child tests had errors</Message>
+    </UnitTestResult>
+    <UnitTestResult>
+      <TestDate>2012-12-20T22:31:30</TestDate>
+      <Passed>1</Passed>
+      <Errors>0</Errors>
+      <Failures>0</Failures>
+      <Inconclusive>0</Inconclusive>
+      <NotRunnable>0</NotRunnable>
+      <Skipped>0</Skipped>
+      <Ignored>0</Ignored>
+      <Time />
+      <Message>Test successful
+
+Execution time: 0.04ms</Message>
+    </UnitTestResult>
   </Results>
   <Tests>
     <TestRecord Name="Obf">
@@ -1149,6 +1285,142 @@ Execution time: 0.04ms</Message>
 
 Execution time: 0.05ms</Message>
         </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T02:54:33</TestDate>
+          <Passed>1</Passed>
+          <Errors>0</Errors>
+          <Failures>0</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>Test successful
+
+Execution time: 0.04ms</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T02:55:54</TestDate>
+          <Passed>1</Passed>
+          <Errors>0</Errors>
+          <Failures>0</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>Test successful
+
+Execution time: 0.04ms</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T02:59:08</TestDate>
+          <Passed>1</Passed>
+          <Errors>0</Errors>
+          <Failures>0</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>Test successful
+
+Execution time: 0.04ms</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T03:00:15</TestDate>
+          <Passed>1</Passed>
+          <Errors>0</Errors>
+          <Failures>0</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>Test successful
+
+Execution time: 0.06ms</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T03:00:43</TestDate>
+          <Passed>1</Passed>
+          <Errors>0</Errors>
+          <Failures>0</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>Test successful
+
+Execution time: 0.04ms</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T03:00:55</TestDate>
+          <Passed>1</Passed>
+          <Errors>0</Errors>
+          <Failures>0</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>Test successful
+
+Execution time: 0.06ms</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T03:02:26</TestDate>
+          <Passed>0</Passed>
+          <Errors>0</Errors>
+          <Failures>1</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>One or more child tests had errors</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T03:02:40</TestDate>
+          <Passed>1</Passed>
+          <Errors>0</Errors>
+          <Failures>0</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>Test successful
+
+Execution time: 0.05ms</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T10:13:33</TestDate>
+          <Passed>0</Passed>
+          <Errors>0</Errors>
+          <Failures>1</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>One or more child tests had errors</Message>
+        </UnitTestResult>
+        <UnitTestResult>
+          <TestDate>2012-12-20T22:31:30</TestDate>
+          <Passed>1</Passed>
+          <Errors>0</Errors>
+          <Failures>0</Failures>
+          <Inconclusive>0</Inconclusive>
+          <NotRunnable>0</NotRunnable>
+          <Skipped>0</Skipped>
+          <Ignored>0</Ignored>
+          <Time />
+          <Message>Test successful
+
+Execution time: 0.04ms</Message>
+        </UnitTestResult>
       </Results>
       <Tests>
         <TestRecord Name="Test">
@@ -1724,6 +1996,128 @@ Execution time: 0.03ms</Message>
               <Message>Test successful
 
 Execution time: 0.04ms</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T02:54:33</TestDate>
+              <Passed>1</Passed>
+              <Errors>0</Errors>
+              <Failures>0</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>Test successful
+
+Execution time: 0.04ms</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T02:55:54</TestDate>
+              <Passed>1</Passed>
+              <Errors>0</Errors>
+              <Failures>0</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>Test successful
+
+Execution time: 0.03ms</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T02:59:08</TestDate>
+              <Passed>1</Passed>
+              <Errors>0</Errors>
+              <Failures>0</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>Test successful
+
+Execution time: 0.03ms</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T03:00:15</TestDate>
+              <Passed>1</Passed>
+              <Errors>0</Errors>
+              <Failures>0</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>Test successful
+
+Execution time: 0.05ms</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T03:00:43</TestDate>
+              <Passed>1</Passed>
+              <Errors>0</Errors>
+              <Failures>0</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>Test successful
+
+Execution time: 0.03ms</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T03:00:55</TestDate>
+              <Passed>1</Passed>
+              <Errors>0</Errors>
+              <Failures>0</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>Test successful
+
+Execution time: 0.05ms</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T03:02:26</TestDate>
+              <Passed>0</Passed>
+              <Errors>0</Errors>
+              <Failures>1</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>One or more child tests had errors</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T03:02:40</TestDate>
+              <Passed>1</Passed>
+              <Errors>0</Errors>
+              <Failures>0</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>Test successful
+
+Execution time: 0.04ms</Message>
+            </UnitTestResult>
+            <UnitTestResult>
+              <TestDate>2012-12-20T10:13:33</TestDate>
+              <Passed>0</Passed>
+              <Errors>0</Errors>
+              <Failures>1</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>One or more child tests had errors</Message>
             </UnitTestResult>
           </Results>
           <Tests>
@@ -3456,6 +3850,350 @@ End Han Solo Junior
 End Princess Leia
 End Darth Vader
 </ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T02:54:33</TestDate>
+                  <Passed>1</Passed>
+                  <Errors>0</Errors>
+                  <Failures>0</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>Test successful
+
+Execution time: 0.02ms</Message>
+                  <ConsoleOutput>Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T02:55:54</TestDate>
+                  <Passed>1</Passed>
+                  <Errors>0</Errors>
+                  <Failures>0</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>Test successful
+
+Execution time: 0.02ms</Message>
+                  <ConsoleOutput>Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T02:59:08</TestDate>
+                  <Passed>1</Passed>
+                  <Errors>0</Errors>
+                  <Failures>0</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>Test successful
+
+Execution time: 0.02ms</Message>
+                  <ConsoleOutput>Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T03:00:15</TestDate>
+                  <Passed>1</Passed>
+                  <Errors>0</Errors>
+                  <Failures>0</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>Test successful
+
+Execution time: 0.02ms</Message>
+                  <ConsoleOutput>Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T03:00:43</TestDate>
+                  <Passed>1</Passed>
+                  <Errors>0</Errors>
+                  <Failures>0</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>Test successful
+
+Execution time: 0.02ms</Message>
+                  <ConsoleOutput>Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T03:00:55</TestDate>
+                  <Passed>1</Passed>
+                  <Errors>0</Errors>
+                  <Failures>0</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>Test successful
+
+Execution time: 0.02ms</Message>
+                  <ConsoleOutput>Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T03:02:26</TestDate>
+                  <Passed>0</Passed>
+                  <Errors>0</Errors>
+                  <Failures>1</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>  Expected: True
+  But was:  False
+</Message>
+                  <StackTrace>  at NUnit.Framework.Assert.That (System.Object actual, IResolveConstraint expression, System.String message, System.Object[] args) [0x00000] in &lt;filename unknown&gt;:0 
+  at NUnit.Framework.Assert.True (Boolean condition) [0x00000] in &lt;filename unknown&gt;:0 
+  at Obf.Test.SubTest (Obf.Person person, Boolean usePersonBlock, Boolean useNameBlock, Boolean useKidsBlock) [0x00040] in /Users/sven/Desktop/csharp-openbinaryformat/OpenBinaryFormat/TestDarthVader.cs:168 
+  at Obf.Test.TestPerson () [0x0001a] in /Users/sven/Desktop/csharp-openbinaryformat/OpenBinaryFormat/TestDarthVader.cs:177 
+  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&amp;)
+  at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x000d5] in /private/tmp/monobuild/build/BUILD/mono-2.10.9/mcs/class/corlib/System.Reflection/MonoMethod.cs:226 </StackTrace>
+                  <ConsoleOutput>Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+Princess Leia
+End Darth Vader
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T03:02:40</TestDate>
+                  <Passed>1</Passed>
+                  <Errors>0</Errors>
+                  <Failures>0</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>Test successful
+
+Execution time: 0.02ms</Message>
+                  <ConsoleOutput>Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T10:13:33</TestDate>
+                  <Passed>0</Passed>
+                  <Errors>0</Errors>
+                  <Failures>1</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>  Expected: True
+  But was:  False
+</Message>
+                  <StackTrace>  at NUnit.Framework.Assert.That (System.Object actual, IResolveConstraint expression, System.String message, System.Object[] args) [0x00000] in &lt;filename unknown&gt;:0 
+  at NUnit.Framework.Assert.True (Boolean condition) [0x00000] in &lt;filename unknown&gt;:0 
+  at Obf.Test.SubTest (Obf.Person person, Boolean usePersonBlock, Boolean useNameBlock, Boolean useKidsBlock) [0x00040] in /Users/sven/Desktop/csharp-openbinaryformat/OpenBinaryFormat/TestDarthVader.cs:168 
+  at Obf.Test.TestPerson () [0x0001a] in /Users/sven/Desktop/csharp-openbinaryformat/OpenBinaryFormat/TestDarthVader.cs:177 
+  at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&amp;)
+  at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x000d5] in /private/tmp/monobuild/build/BUILD/mono-2.10.9/mcs/class/corlib/System.Reflection/MonoMethod.cs:226 </StackTrace>
+                  <ConsoleOutput>Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+Princess Leia
+Han Solo Junior
+End Han Solo Junior
+End Princess Leia
+End Darth Vader
+Darth Vader
+Luke Skywalker
+End Luke Skywalker
+Already read name: Luke Skywalker
+ReadIt
+ReadIt
+Princess Leia
+End Darth Vader
+</ConsoleOutput>
+                  <ConsoleError />
+                </UnitTestResult>
+              </Results>
+            </TestRecord>
+          </Tests>
+        </TestRecord>
+        <TestRecord Name="Tests">
+          <Results>
+            <UnitTestResult>
+              <TestDate>2012-12-20T22:31:30</TestDate>
+              <Passed>1</Passed>
+              <Errors>0</Errors>
+              <Failures>0</Failures>
+              <Inconclusive>0</Inconclusive>
+              <NotRunnable>0</NotRunnable>
+              <Skipped>0</Skipped>
+              <Ignored>0</Ignored>
+              <Time />
+              <Message>Test successful
+
+Execution time: 0.03ms</Message>
+            </UnitTestResult>
+          </Results>
+          <Tests>
+            <TestRecord Name="TestCase">
+              <Results>
+                <UnitTestResult>
+                  <TestDate>2012-12-20T22:31:30</TestDate>
+                  <Passed>1</Passed>
+                  <Errors>0</Errors>
+                  <Failures>0</Failures>
+                  <Inconclusive>0</Inconclusive>
+                  <NotRunnable>0</NotRunnable>
+                  <Skipped>0</Skipped>
+                  <Ignored>0</Ignored>
+                  <Time />
+                  <Message>Test successful
+
+Execution time: 0.01ms</Message>
+                  <ConsoleOutput />
                   <ConsoleError />
                 </UnitTestResult>
               </Results>

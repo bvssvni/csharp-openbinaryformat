@@ -36,9 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="OpenBinaryFormat.cs" />
     <Compile Include="Field.cs" />
-    <Compile Include="TestDarthVader.cs" />
+    <Compile Include="OpenBinaryFormat.cs" />
+    <Compile Include="Tests.cs" />
+    <Compile Include="IrreversibleNumber.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

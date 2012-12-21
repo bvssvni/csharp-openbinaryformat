@@ -23,8 +23,6 @@ namespace Obf
 		private System.IO.BinaryWriter w;
 		private System.IO.BinaryReader r;
 
-		public delegate void ReadingFieldDelegate(object sender, IEnumerator<bool> iterator);
-		
 		public const int FORMAT_TYPE_BLOCK = -1;
 		public const int FORMAT_TYPE_LONG = -100;
 		public const int FORMAT_TYPE_INT = -101;
@@ -32,117 +30,6 @@ namespace Obf
 		public const int FORMAT_TYPE_FLOAT = -201;
 		public const int FORMAT_TYPE_STRING = -300;
 		public const int FORMAT_TYPE_BYTES = -400;
-		
-		public T Read<T>(Field evt)
-		{
-			switch (evt.Type) {
-			case FORMAT_TYPE_STRING:
-				evt.Handled = true;
-				return (T)Convert.ChangeType(r.ReadString(), typeof(T));
-			case FORMAT_TYPE_DOUBLE:
-				evt.Handled = true;
-				return (T)Convert.ChangeType(r.ReadDouble(), typeof(T));
-			case FORMAT_TYPE_FLOAT:
-				evt.Handled = true;
-				return (T)Convert.ChangeType(r.ReadSingle(), typeof(T));
-			case FORMAT_TYPE_INT:
-				evt.Handled = true;
-				return (T)Convert.ChangeType(r.ReadInt32(), typeof(T));
-			case FORMAT_TYPE_LONG:
-				evt.Handled = true;
-				return (T)Convert.ChangeType(r.ReadInt64(), typeof(T));
-			case FORMAT_TYPE_BYTES:
-				evt.Handled = true;
-				return (T)Convert.ChangeType(r.ReadBytes((int)r.ReadInt64()), typeof(T));
-			}
-			
-			// Jump to the end of block.
-			evt.Handled = false;
-			return default(T);
-		}
-
-		private Field m_currentField;
-
-		public Field CurrentField
-		{
-			get {
-				return m_currentField;
-			}
-		}
-
-		/// <summary>
-		/// Returns an iterator that keeps track of the fields in the file or stream.
-		/// This creates a "root block" iterator for nested blocks.
-		/// </summary>
-		private IEnumerator<bool> Fields()
-		{
-			long end = r.BaseStream.Length;
-			m_currentField = new Field();
-			while (r.BaseStream.Position < end) {
-				m_currentField.Name = r.ReadString();
-				m_currentField.Type = r.ReadInt32();
-				m_currentField.Handled = false;
-				m_currentField.ReadIt = false;
-
-				yield return true;
-			}
-		}
-
-		/// <summary>
-		/// Constructs a field iterator for a block within the context of a parent field iterator.
-		/// </summary>
-		/// <returns>
-		/// Returns an iterator for a block.
-		/// </returns>
-		/// <param name='fields'>
-		/// The parent block to restrict the domain of the iterator.
-		/// </param>
-		/// <param name='blockEnd'>
-		/// The end position of the block.
-		/// </param>
-		private IEnumerator<bool> BlockFields(IEnumerator<bool> fields, long blockEnd)
-		{
-			while (r.BaseStream.Position < blockEnd && fields.MoveNext()) {
-				yield return true;
-			}
-		}
-
-		public void ReadField(ReadingFieldDelegate func, IEnumerator<bool> fields = null)
-		{
-			if (fields == null) fields = Fields();
-			if (m_currentField == null || m_currentField.Handled) fields.MoveNext();
-
-			do {
-				if (m_currentField.Type == FORMAT_TYPE_BLOCK) {
-					// Start on a new block.
-					var length = r.ReadInt64();
-					var pos = r.BaseStream.Position;
-					var blockFields = BlockFields(fields, pos + length);
-					m_currentField.Handled = true;
-
-					ReadField(func, blockFields);
-					if (m_currentField.ReadIt) {
-						Console.WriteLine("ReadIt");
-						return;
-					}
-
-					if (!m_currentField.Handled) {
-						// Jump to end of block.
-						r.BaseStream.Position = pos + length;
-						m_currentField.Handled = true;
-
-						// Console.WriteLine("Jumping");
-					}
-				} else {
-					// Deal with the field.
-					func(this, fields);
-
-					if (!m_currentField.Handled) {
-						return;
-					}
-				}
-			} while (fields.MoveNext());
-		}
 
 		public static OpenBinaryFormat FromFile(string file)
 		{
@@ -274,7 +161,76 @@ namespace Obf
 			w.Write(endPos-pos-8);
 			w.BaseStream.Position = endPos;
 		}
-		
+
+		private IrreversibleNumber m_readCounter = new IrreversibleNumber();
+
+		public delegate T Delayed<T>();
+
+		private Dictionary<string, object> m_readValues = new Dictionary<string, object>();
+
+		public long ReadBlock(string id)
+		{
+			var rId = r.ReadString();
+			if (rId != id) throw new Exception("Expected '" + id + "' got '" + rId + "'.");
+
+			var rType = r.ReadInt32();
+			if (rType != FORMAT_TYPE_BLOCK) throw new Exception("Not a block type.");
+
+			return r.BaseStream.Position + r.ReadInt64();
+		}
+
+		public Delayed<T> ReadDelayed<T>(string id, T defaultValue, long blockEnd = -1)
+		{
+			if (blockEnd == -1) blockEnd = r.BaseStream.Length;
+
+			while (!m_readValues.ContainsKey(id) && r.BaseStream.Position < blockEnd) {
+				var rId = r.ReadString();
+				var rType = r.ReadInt32();
+				object val = null;
+
+				switch (rType) {
+					case FORMAT_TYPE_INT:
+						val = r.ReadInt32();
+						break;
+					case FORMAT_TYPE_LONG:
+						val = r.ReadInt64();
+						break;
+					case FORMAT_TYPE_DOUBLE:
+						val = r.ReadDouble();
+						break;
+					case FORMAT_TYPE_FLOAT:
+						val = r.ReadSingle();
+						break;
+					case FORMAT_TYPE_STRING:
+						val = r.ReadString();
+						break;
+					case FORMAT_TYPE_BYTES:
+						val = r.ReadBytes((int)r.ReadInt64());
+						break;
+					case FORMAT_TYPE_BLOCK:
+						// Read the block and look for the value.
+						var subFunc = ReadDelayed<T>(id, defaultValue, r.BaseStream.Position + r.ReadInt64());
+						if (m_readValues.ContainsKey(id)) return subFunc;
+
+						// If it does not exists, continue searching within this block.
+						continue;
+				}
+
+				m_readValues.Add(rId, val);
+				m_readCounter.Increase();
+			}
+
+			// Use a closure to read from the list.
+			Delayed<T> res = delegate() {
+				if (!m_readValues.ContainsKey(id)) return defaultValue;
+
+				var obj = m_readValues[id];
+				m_readValues.Remove(id);
+				m_readCounter.Decrease();
+				return (T)Convert.ChangeType(obj, typeof(T));
+			};
+			return res;
+		}
 	}
 }
 
