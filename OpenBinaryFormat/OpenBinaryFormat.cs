@@ -134,14 +134,24 @@ namespace Obf
 		/// <param name='w'>
 		/// A binary writer that writes to a file or a stream.
 		/// </param>
-		public long StartBlock(string name)
+		public long StartBlock(string id)
 		{
-			w.Write(name);
-			w.Write(FORMAT_TYPE_BLOCK);
-			long pos = w.BaseStream.Position;
-			w.Write((long)-1);
-			
-			return pos;
+			if (w != null) {
+				w.Write(id);
+				w.Write(FORMAT_TYPE_BLOCK);
+				long pos = w.BaseStream.Position;
+				w.Write((long)-1);
+				return pos;
+			} else {
+				var rId = r.ReadString();
+				if (rId != id) throw new Exception("Expected '" + id + "' got '" + rId + "'.");
+				
+				var rType = r.ReadInt32();
+				if (rType != FORMAT_TYPE_BLOCK) throw new Exception("Not a block type.");
+				
+				return r.BaseStream.Position + r.ReadInt64();
+			}
+
 		}
 		
 		/// <summary>
@@ -155,31 +165,30 @@ namespace Obf
 		/// </param>
 		public void EndBlock(long pos)
 		{
-			// Write the size of the block.
-			long endPos = w.BaseStream.Position;
-			w.BaseStream.Position = pos;
-			w.Write(endPos-pos-8);
-			w.BaseStream.Position = endPos;
+			if (w != null) {
+				long endPos = w.BaseStream.Position;
+				w.BaseStream.Position = pos;
+				w.Write(endPos - pos - 8);
+				w.BaseStream.Position = endPos;
+			} else {
+				r.BaseStream.Position = pos;
+				
+				// Remove read values.
+				m_readValues.Clear();
+				m_errors.Clear();
+			}
 		}
-
-		private IrreversibleNumber m_readCounter = new IrreversibleNumber();
-
-		public delegate T Delayed<T>();
 
 		private Dictionary<string, object> m_readValues = new Dictionary<string, object>();
+		private Dictionary<string, string> m_errors = new Dictionary<string, string>();
 
-		public long ReadBlock(string id)
+		public Dictionary<string, string> Errors
 		{
-			var rId = r.ReadString();
-			if (rId != id) throw new Exception("Expected '" + id + "' got '" + rId + "'.");
-
-			var rType = r.ReadInt32();
-			if (rType != FORMAT_TYPE_BLOCK) throw new Exception("Not a block type.");
-
-			return r.BaseStream.Position + r.ReadInt64();
+			get
+			{return m_errors;}
 		}
 
-		public Delayed<T> ReadDelayed<T>(string id, T defaultValue, long blockEnd = -1)
+		public T Read<T>(string id, T defaultValue, long blockEnd = -1)
 		{
 			if (blockEnd == -1) blockEnd = r.BaseStream.Length;
 
@@ -209,27 +218,26 @@ namespace Obf
 						break;
 					case FORMAT_TYPE_BLOCK:
 						// Read the block and look for the value.
-						var subFunc = ReadDelayed<T>(id, defaultValue, r.BaseStream.Position + r.ReadInt64());
-						if (m_readValues.ContainsKey(id)) return subFunc;
+						var subVal = Read<T>(id, defaultValue, r.BaseStream.Position + r.ReadInt64());
+						if (m_readValues.ContainsKey(id)) return subVal;
 
 						// If it does not exists, continue searching within this block.
 						continue;
+					default:
+						// Unknown type.
+						// Jump to end of block.
+						m_errors.Add(id, "Unknown type: " + rType);
+						r.BaseStream.Position = blockEnd;
+						break;
 				}
 
 				m_readValues.Add(rId, val);
-				m_readCounter.Increase();
 			}
 
-			// Use a closure to read from the list.
-			Delayed<T> res = delegate() {
-				if (!m_readValues.ContainsKey(id)) return defaultValue;
+			if (!m_readValues.ContainsKey(id)) return defaultValue;
 
-				var obj = m_readValues[id];
-				m_readValues.Remove(id);
-				m_readCounter.Decrease();
-				return (T)Convert.ChangeType(obj, typeof(T));
-			};
-			return res;
+			var objVal = m_readValues[id];
+			return (T)Convert.ChangeType(objVal, typeof(T));
 		}
 	}
 }
