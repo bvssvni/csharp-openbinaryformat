@@ -8,7 +8,7 @@ namespace Obf
 	public class Tests
 	{
 		[Test()]
-		public void TestReadDelayed1()
+		public void TestRead1()
 		{
 			var mem = new System.IO.MemoryStream();
 			var f = OpenBinaryFormat.ToMemory(mem);
@@ -40,6 +40,24 @@ namespace Obf
 			f.Close();
 		}
 
+		[Test()]
+		public void TestRead2()
+		{
+			var mem = new System.IO.MemoryStream();
+			var f = OpenBinaryFormat.ToMemory(mem);
+			
+			var person = f.StartBlock("person");
+			
+			f.EndBlock(person);
+			
+			var bytes = mem.ToArray();
+			f.Close();
+			
+			f = OpenBinaryFormat.FromBytes(bytes);
+
+			
+			f.Close();
+		}
 	}
 }
 
