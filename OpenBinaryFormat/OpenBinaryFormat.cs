@@ -168,7 +168,7 @@ namespace Obf
 			if (w != null) {
 				long endPos = w.BaseStream.Position;
 				w.BaseStream.Position = pos;
-				w.Write(endPos - pos - 8);
+				w.Write(endPos - pos);
 				w.BaseStream.Position = endPos;
 			} else {
 				r.BaseStream.Position = pos;

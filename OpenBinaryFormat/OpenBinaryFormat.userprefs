@@ -1,8 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="OpenBinaryFormat.cs">
     <Files>
-      <File FileName="OpenBinaryFormat.cs" Line="32" Column="45" />
+      <File FileName="OpenBinaryFormat.cs" Line="171" Column="25" />
       <File FileName="Tests.cs" Line="49" Column="40" />
     </Files>
     <Pads>
