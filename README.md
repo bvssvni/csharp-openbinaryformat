@@ -12,6 +12,10 @@ The format uses block abstractions for compability control and can convert types
 Unlike XML and JSON, OpenBinaryFormat supports custom data types and allows reading and writing in the same manner  
 as typical when "dumping data" to binary files.  
 
+The philosophy is that blocks required when reading will throw exception if not there.  
+If an optional block is saved within a block it should not be requested,  
+but read the fields in a straight-forward-manner.  
+
 When reading from a block, the order of the fields does not matter.  
 If an unknown type is encountered, it will jump to the end of the block.  
 The format supports nested blocks, so one can have complete control over "extensions" to an existing document format.  
