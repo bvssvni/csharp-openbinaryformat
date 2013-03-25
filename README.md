@@ -8,8 +8,13 @@ For version log, view the individual files.
 ##What Is OpenBinaryFormat?
 
 OpenBinaryFormat is a binary format designed for simple applications.  
-For reading it is forward-only.  
-It attempts to convert the data type if the type is different from expected.  
+It is block based and designed for apps that dumps data in same order as reading.  
+This implementation supports:  
+
+1. GZip compression on files ending with ".gz".
+2. Automatic conversion to requested type.
+3. Custom types.
+4. Seeking.
 
 ##Example: Writing Data
 
@@ -41,7 +46,36 @@ It attempts to convert the data type if the type is different from expected.
 
 The 'Seek' method searches through the file looking for a block with that name.  
 The search stops when it reaches the position given by the third argument.  
-You can use 'StartBlock' to throw exception if the read field is not the correct block.  
+
+TIP: Use 'StartBlock' to throw exception if the read field is not the correct block.  
+TIP 2: Use 'NextId' to check the next field before reading.  
+
+##Example: Writing Custom Data
+
+    var points = w.StartBlock("Points");
+    var bw = w.Writer;
+    bw.Write((int)X.Count);
+    for (int i = 0; i < n; i++) {
+    	bw.Write((double)X[i]);
+    	bw.Write((double)Y[i]);
+    }
+    w.EndBlock(points);
+
+A block can be used to write arbitrary data.  
+If you need seeking within a such block, use byte array.  
+
+##Example: Reading Custom Data
+
+    var points = r.StartBlock("Points");
+    var br = r.Reader;
+    var n = br.ReadInt32();
+    for (int i = 0; i < n; i++) {
+    	this.Add(new Point(br.ReadDouble(), br.ReadDouble()));
+    }
+    r.EndBlock(points);
+
+A block can be contain arbitrary data.  
+If you need seeking within a such block, use byte array.  
 
 ##Example: Writing Compressed File
 
