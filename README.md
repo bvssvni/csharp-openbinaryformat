@@ -8,6 +8,8 @@ For version log, view the individual files.
 ##What Is OpenBinaryFormat?
 
 OpenBinaryFormat is a binary format designed for simple applications.  
+For reading it is forward-only.  
+It attempts to convert the data type if the type is different from expected.  
 
 ##Example: Writing Data
 
@@ -38,6 +40,7 @@ OpenBinaryFormat is a binary format designed for simple applications.
     f.Close();
 
 The 'Seek' method searches through the file looking for a block with that name.  
+The search stops when it reaches the position given by the third argument.  
 You can use 'StartBlock' to throw exception if the read field is not the correct block.  
 
 ##Example: Writing Compressed File
