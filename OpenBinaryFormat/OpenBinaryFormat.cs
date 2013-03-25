@@ -68,6 +68,18 @@ namespace Obf
 		public const int FORMAT_TYPE_STRING = -300;
 		public const int FORMAT_TYPE_BYTES = -400;
 		
+		public System.IO.BinaryReader Reader {
+			get {
+				return r;
+			}
+		}
+		
+		public System.IO.BinaryWriter Writer {
+			get {
+				return w;
+			}
+		}
+		
 		public static OpenBinaryFormat FromFile(string file)
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
@@ -230,6 +242,18 @@ namespace Obf
 				
 				return r.BaseStream.Position + r.ReadInt64();
 			}
+		}
+		
+		/// <summary>
+		/// Reads the next identification string.
+		/// </summary>
+		/// <returns>The identifier of next field.</returns>
+		public string NextId()
+		{
+			var pos = r.BaseStream.Position;
+			var id = r.ReadString();
+			r.BaseStream.Position = pos;
+			return id;
 		}
 		
 		/// <summary>
