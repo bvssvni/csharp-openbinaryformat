@@ -1,5 +1,40 @@
+/*
+
+OpenBinaryFormat - A binary format that is version-neutral, flexible and fault-tolerant.
+BSD license.
+by Sven Nilsen, 2012
+http://www.cutoutpro.com
+Version: 0.001 in angular degrees version notation
+http://isprogrammingeasy.blogspot.no/2012/08/angular-degrees-versioning-notation.html
+
+0.001	Added in-memory gzip compression on files that ends with ".gz".
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+1. Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+The views and conclusions contained in the software and documentation are those
+of the authors and should not be interpreted as representing official policies,
+either expressed or implied, of the FreeBSD Project.
+
+*/
+
 using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 
 namespace Obf
 {
@@ -20,9 +55,11 @@ namespace Obf
 	/// </summary>
 	public class OpenBinaryFormat
 	{
+		// This field is set when writing to a compressed file ending with '.gz'.
+		private string m_gzFile = null;
 		private System.IO.BinaryWriter w;
 		private System.IO.BinaryReader r;
-
+		
 		public const int FORMAT_TYPE_BLOCK = -1;
 		public const int FORMAT_TYPE_LONG = -100;
 		public const int FORMAT_TYPE_INT = -101;
@@ -30,43 +67,75 @@ namespace Obf
 		public const int FORMAT_TYPE_FLOAT = -201;
 		public const int FORMAT_TYPE_STRING = -300;
 		public const int FORMAT_TYPE_BYTES = -400;
-
+		
 		public static OpenBinaryFormat FromFile(string file)
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
 			System.IO.FileStream f = new System.IO.FileStream(file, System.IO.FileMode.Open, System.IO.FileAccess.Read);
-			format.r = new System.IO.BinaryReader(f);
-
+			if (file.EndsWith(".gz")) {
+				var mem = new System.IO.MemoryStream();
+				using (GZipStream gzip = new GZipStream(f, CompressionMode.Decompress))
+				{
+					// Use 4 KiB as buffer when decompressing.
+					var bufferSize = 1024 << 2;
+					var buffer = new byte[bufferSize];
+					var readBytes = bufferSize;
+					while (readBytes == bufferSize) {
+						readBytes = gzip.Read(buffer, 0, buffer.Length);
+						mem.Write(buffer, 0, readBytes);
+					}
+				}
+				var bytes = mem.ToArray();
+				f.Close();
+				format.r = new System.IO.BinaryReader(new System.IO.MemoryStream(bytes), System.Text.Encoding.UTF8);
+			} else {
+				format.r = new System.IO.BinaryReader(f);
+			}
+			
 			return format;
 		}
-
+		
 		public static OpenBinaryFormat FromBytes(byte[] bytes)
 		{
 			return FromMemory(new System.IO.MemoryStream(bytes));
 		}
-
+		
 		public static OpenBinaryFormat FromMemory(System.IO.MemoryStream mem)
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
 			format.r = new System.IO.BinaryReader(mem, System.Text.Encoding.UTF8);
-
+			
+			return format;
+		}
+		
+		public static OpenBinaryFormat FromStream(System.IO.Stream stream)
+		{
+			OpenBinaryFormat format = new OpenBinaryFormat();
+			format.r = new System.IO.BinaryReader(stream, System.Text.Encoding.UTF8);
+			
 			return format;
 		}
 		
 		public static OpenBinaryFormat ToFile(string file)
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
-			System.IO.FileStream f = new System.IO.FileStream(file, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
-			format.w = new System.IO.BinaryWriter(f, System.Text.Encoding.UTF8);
+			if (file.EndsWith(".gz")) {
+				var mem = new System.IO.MemoryStream();
+				format.w = new System.IO.BinaryWriter(mem, System.Text.Encoding.UTF8);
+				format.m_gzFile = file;
+			} else {
+				System.IO.FileStream f = new System.IO.FileStream(file, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
+				format.w = new System.IO.BinaryWriter(f, System.Text.Encoding.UTF8);
+			}
 			
 			return format;
 		}
-
+		
 		public static OpenBinaryFormat ToMemory(System.IO.MemoryStream mem)
 		{
 			OpenBinaryFormat format = new OpenBinaryFormat();
 			format.w = new System.IO.BinaryWriter(mem, System.Text.Encoding.UTF8);
-
+			
 			return format;
 		}
 		
@@ -75,6 +144,16 @@ namespace Obf
 			if (w != null) {
 				// Set the length of file.
 				w.BaseStream.SetLength(w.BaseStream.Position);
+				
+				if (m_gzFile != null) {
+					// Save the file compressed to disc.
+					System.IO.FileStream f = new System.IO.FileStream(m_gzFile, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
+					GZipStream gzip = new GZipStream(f, CompressionMode.Compress);
+					var bytes = ((System.IO.MemoryStream)w.BaseStream).ToArray();
+					gzip.Write(bytes, 0, bytes.Length);
+					gzip.Close();
+				}
+				
 				w.Close();
 			}
 			if (r != null) r.Close();
@@ -86,7 +165,7 @@ namespace Obf
 			w.Write(FORMAT_TYPE_DOUBLE);
 			w.Write(val);
 		}
-
+		
 		public void WriteFloat(string name, float val)
 		{
 			w.Write(name);
@@ -151,7 +230,6 @@ namespace Obf
 				
 				return r.BaseStream.Position + r.ReadInt64();
 			}
-
 		}
 		
 		/// <summary>
@@ -178,25 +256,25 @@ namespace Obf
 				m_errors.Clear();
 			}
 		}
-
+		
 		private Dictionary<string, object> m_readValues = new Dictionary<string, object>();
 		private Dictionary<string, string> m_errors = new Dictionary<string, string>();
-
+		
 		public Dictionary<string, string> Errors
 		{
 			get
 			{return m_errors;}
 		}
-
+		
 		public T Read<T>(string id, T defaultValue, long blockEnd = -1)
 		{
 			if (blockEnd == -1) blockEnd = r.BaseStream.Length;
-
+			
 			while (!m_readValues.ContainsKey(id) && r.BaseStream.Position < blockEnd) {
 				var rId = r.ReadString();
 				var rType = r.ReadInt32();
 				object val = null;
-
+				
 				switch (rType) {
 					case FORMAT_TYPE_INT:
 						val = r.ReadInt32();
@@ -220,7 +298,7 @@ namespace Obf
 						// Read the block and look for the value.
 						var subVal = Read<T>(id, defaultValue, r.BaseStream.Position + r.ReadInt64());
 						if (m_readValues.ContainsKey(id)) return subVal;
-
+						
 						// If it does not exists, continue searching within this block.
 						continue;
 					default:
@@ -230,12 +308,12 @@ namespace Obf
 						r.BaseStream.Position = blockEnd;
 						break;
 				}
-
+				
 				m_readValues.Add(rId, val);
 			}
-
+			
 			if (!m_readValues.ContainsKey(id)) return defaultValue;
-
+			
 			var objVal = m_readValues[id];
 			return (T)Convert.ChangeType(objVal, typeof(T));
 		}
