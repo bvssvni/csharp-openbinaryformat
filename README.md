@@ -7,29 +7,11 @@ For version log, view the individual files.
 
 ##What Is OpenBinaryFormat?
 
-OpenBinaryFormat is a binary format that lets you read and write data in a safe but straight-forward way.  
-It is designed for advanced applications that require maximum compability and fault-tolerance.  
-The format uses block abstractions for compability control and can convert types automatically.  
-Unlike XML and JSON, OpenBinaryFormat supports custom data types and allows reading and writing in the same manner  
-as typical when "dumping data" to binary files.  
+OpenBinaryFormat is a binary format designed for simple applications.  
 
-The philosophy is that blocks required when reading will throw exception if not there.  
-If an optional block is saved within a block it should not be requested,  
-but read the fields in a straight-forward-manner.  
+##Example: Writing Data
 
-When reading from a block, the order of the fields does not matter.  
-If an unknown type is encountered, it will jump to the end of the block.  
-The format supports nested blocks, so one can have complete control over "extensions" to an existing document format.  
-
-Since the format is binary, it requires no parsing of numbers or enconding of binary blobs.  
-The only trade-off is an id (string) + type (int) for each field.  
-Blocks uses long (int64) for length, which allows files much larger than 2GB.  
-
-##Example
-
-Writing data:
-
-    var f = OpenBinaryFormat.ToFile("data.txt");
+    var f = OpenBinaryFormat.ToFile("data.obf");
 
     var person = f.StartBlock("person");
     
@@ -41,24 +23,36 @@ Writing data:
     
     f.Close();
     
-Reading data:
+##Example: Reading data
 
-    var f = OpenBinaryFormat.FromFile("data.txt");
+    var f = OpenBinaryFormat.FromFile("data.obf");
 
-    var person = f.StartBlock("person");
+    var person = f.SeekBlock("person");
     
-    this.name = f.Read<string>("name", null, person);
-    this.age = f.Read<int>("age", 0, person);
-    this.comments = f.Read<string>("comments", "no comments", person);
+    this.name = f.Seek<string>("name", null, person);
+    this.age = f.Seek<int>("age", 0, person);
+    this.comments = f.Seek<string>("comments", "no comments", person);
     
     f.EndBlock(person);
     
     f.Close();
 
-##Compression
+The 'Seek' method searches through the file looking for a block with that name.  
+You can use 'StartBlock' to throw exception if the read field is not the correct block.  
 
-When OpenBinaryFormat reads or writes to a file ending with ".gz", it uses gzip compression.  
-The compression happens in-memory, so saved changed will not take affect until calling '.Close()'.  
+##Example: Writing Compressed File
+
+    var f = OpenBinaryFormat.ToFile("data.obf.gz");
+    ...
+    
+When the file name ends with ".gz", it will compress the data in-memory with gzip compression.  
+
+##Example: Reading Compressed File
+
+    var f = OpenBinaryFormat.FromFile("data.obf.gz");
+    ...
+
+When the file name ends with ".gz", it will decompress the data in-memory with gzip compression.  
 
 ##Field Binary Layout
 
