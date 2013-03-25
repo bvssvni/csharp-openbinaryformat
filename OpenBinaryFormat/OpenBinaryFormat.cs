@@ -251,13 +251,11 @@ namespace Obf
 			} else {
 				r.BaseStream.Position = pos;
 				
-				// Remove read values.
-				m_readValues.Clear();
+				// Clear errors.
 				m_errors.Clear();
 			}
 		}
 		
-		private Dictionary<string, object> m_readValues = new Dictionary<string, object>();
 		private Dictionary<string, string> m_errors = new Dictionary<string, string>();
 		
 		public Dictionary<string, string> Errors
@@ -266,11 +264,59 @@ namespace Obf
 			{return m_errors;}
 		}
 		
-		public T Read<T>(string id, T defaultValue, long blockEnd = -1)
+		public long SeekBlock(string id, long blockEnd = -1)
 		{
 			if (blockEnd == -1) blockEnd = r.BaseStream.Length;
 			
-			while (!m_readValues.ContainsKey(id) && r.BaseStream.Position < blockEnd) {
+			while (r.BaseStream.Position < blockEnd) {
+				var rId = r.ReadString();
+				var rType = r.ReadInt32();
+				
+				switch (rType) {
+					case FORMAT_TYPE_INT:
+						r.ReadInt32();
+						break;
+					case FORMAT_TYPE_LONG:
+						r.ReadInt64();
+						break;
+					case FORMAT_TYPE_DOUBLE:
+						r.ReadDouble();
+						break;
+					case FORMAT_TYPE_FLOAT:
+						r.ReadSingle();
+						break;
+					case FORMAT_TYPE_STRING:
+						r.ReadString();
+						break;
+					case FORMAT_TYPE_BYTES:
+						r.BaseStream.Position += r.ReadInt64();
+						break;
+					case FORMAT_TYPE_BLOCK:
+						
+						if (rId == id) return r.BaseStream.Position + r.ReadInt64();
+						
+						// Skip block.
+						r.BaseStream.Position = r.BaseStream.Position + r.ReadInt64();
+						
+						// If it does not exists, continue searching within this block.
+						continue;
+					default:
+						// Unknown type.
+						// Jump to end of block.
+						m_errors.Add(id, "Unknown type: " + rType);
+						r.BaseStream.Position = blockEnd;
+						break;
+				}
+			}
+			
+			return -1;
+		}
+		
+		public T Seek<T>(string id, T defaultValue, long blockEnd = -1)
+		{
+			if (blockEnd == -1) blockEnd = r.BaseStream.Length;
+			
+			while (r.BaseStream.Position < blockEnd) {
 				var rId = r.ReadString();
 				var rType = r.ReadInt32();
 				object val = null;
@@ -295,9 +341,8 @@ namespace Obf
 						val = r.ReadBytes((int)r.ReadInt64());
 						break;
 					case FORMAT_TYPE_BLOCK:
-						// Read the block and look for the value.
-						var subVal = Read<T>(id, defaultValue, r.BaseStream.Position + r.ReadInt64());
-						if (m_readValues.ContainsKey(id)) return subVal;
+						// Skip block.
+						r.BaseStream.Position = r.BaseStream.Position + r.ReadInt64();
 						
 						// If it does not exists, continue searching within this block.
 						continue;
@@ -309,13 +354,10 @@ namespace Obf
 						break;
 				}
 				
-				m_readValues.Add(rId, val);
+				if (rId == id) return (T)Convert.ChangeType(val, typeof(T));
 			}
 			
-			if (!m_readValues.ContainsKey(id)) return defaultValue;
-			
-			var objVal = m_readValues[id];
-			return (T)Convert.ChangeType(objVal, typeof(T));
+			return defaultValue;
 		}
 	}
 }
