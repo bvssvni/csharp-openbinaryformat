@@ -2,7 +2,8 @@ csharp-openbinaryformat
 =======================
 
 A binary format that is version-neutral, flexible and fault-tolerant.  
-BSD license (for more information about license and update log, see "version.md").  
+BSD license.  
+For version log, view the individual files.  
 
 ##What Is OpenBinaryFormat?
 
@@ -53,6 +54,11 @@ Reading data:
     f.EndBlock(person);
     
     f.Close();
+
+##Compression
+
+When OpenBinaryFormat reads or writes to a file ending with ".gz", it uses gzip compression.  
+The compression happens in-memory, so saved changed will not take affect until calling '.Close()'.  
 
 ##Field Binary Layout
 
